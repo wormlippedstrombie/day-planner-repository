@@ -44,13 +44,39 @@ $(function () {
     });
   }
 
+  function generateTimeBlocks() {
+    var startHour = 9;
+    var endHour = 17; // 5PM in 24-hour format
+
+    // Container to store the generated time blocks
+    var timeBlocksHTML = '';
+
+    // Loop to create the time blocks
+    for (var hour = startHour; hour <= endHour; hour++) {
+      var timeBlockHTML = `
+        <div id="hour-${hour}" class="row time-block">
+          <div class="col-2 col-md-1 hour text-center py-3">${dayjs().hour(hour).format("hA")}</div>
+          <textarea class="col-8 col-md-10 description" rows="3"></textarea>
+          <button class="btn saveBtn col-2 col-md-1" aria-label="save">
+            <i class="fas fa-save" aria-hidden="true"></i>
+          </button>
+        </div>
+      `;
+      timeBlocksHTML += timeBlockHTML;
+    }
+
+    $("#timeBlocks").append(timeBlocksHTML);
+  }
+
   // Update the time-block classes and display the current time initially
   updateTimeBlocks();
   updateCurrentTime();
 
   // Continuously update the current time every second
-  setInterval(updateCurrentTime, 1000);
+  setInterval(updateTimeBlocks, 1000);
 
   // Load saved events from local storage on page load
   loadEvents();
+
+  generateTimeBlocks();
 });
